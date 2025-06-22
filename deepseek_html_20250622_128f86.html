@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Books of 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e6e6e6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 217, 255, 0.7);
+            background: linear-gradient(to right, #ff7eee, #4facfe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glow 2s infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a1a1c2;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(79, 172, 254, 0.3);
+            border-color: #4facfe;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .book-card {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(79, 172, 254, 0.3);
+            border-color: rgba(79, 172, 254, 0.4);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff7eee, #4facfe);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .card-top {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .book-card:hover .card-top img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 20px;
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-title {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .book-author {
+            color: #a1a1c2;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .book-info {
+            display: flex;
+            justify-content: space-between;
+            color: #a1a1c2;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .book-desc {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #c7c7e2;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .book-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff7eee, #4facfe);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .book-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: #a1a1c2;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .highlight {
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(79, 172, 254, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(79, 172, 254, 0.9), 0 0 30px rgba(255, 126, 238, 0.6);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Top 10 Books of 2025</h1>
+            <p class="subtitle">Discover the most anticipated books of 2025 based on critical acclaim, reader popularity, and literary buzz. Click on any title to learn more about these upcoming masterpieces.</p>
+        </header>
+
+        <div class="filter-bar">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Fiction</button>
+            <button class="filter-btn">Non-Fiction</button>
+            <button class="filter-btn">Fantasy</button>
+            <button class="filter-btn">Thriller</button>
+        </div>
+
+        <div class="books-grid">
+            <!-- Book 1 -->
+            <div class="book-card">
+                <div class="rank-badge">1</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80" alt="Sunrise on the Reaping">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">Sunrise on the Reaping</h3>
+                    <div class="book-author">Suzanne Collins</div>
+                    <div class="book-info">
+                        <span>Genre: Dystopian</span>
+                        <span>Pages: 384</span>
+                    </div>
+                    <p class="book-desc">Set in the world of The Hunger Games, this novel explores Haymitch Abernathy's story as he's reaped for the 50th Hunger Games. As the day dawns on the fiftieth annual Hunger Games, fear grips the districts of Panem.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card">
+                <div class="rank-badge">2</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&w=600&q=80" alt="Onyx Storm">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">Onyx Storm</h3>
+                    <div class="book-author">Rebecca Yarros</div>
+                    <div class="book-info">
+                        <span>Genre: Fantasy</span>
+                        <span>Pages: 512</span>
+                    </div>
+                    <p class="book-desc">The third installment in The Empyrean series continues the saga at Basgiath War College. Violet Sorrengail journeys beyond failing wards to seek allies from unfamiliar lands to stand with Navarre.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book-card">
+                <div class="rank-badge">3</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" alt="Dream Count">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">Dream Count</h3>
+                    <div class="book-author">Chimamanda Ngozi Adichie</div>
+                    <div class="book-info">
+                        <span>Genre: Literary Fiction</span>
+                        <span>Pages: 432</span>
+                    </div>
+                    <p class="book-desc">Adichie's first novel in 10 years charts the lives and loves of four women in Nigeria and the US. A rich exploration of female experience, described as "magisterial, wide-ranging and delicately done."</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book-card">
+                <div class="rank-badge">4</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=600&q=80" alt="Atmosphere: A Love Story">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">Atmosphere: A Love Story</h3>
+                    <div class="book-author">Taylor Jenkins Reid</div>
+                    <div class="book-info">
+                        <span>Genre: Historical Fiction</span>
+                        <span>Pages: 368</span>
+                    </div>
+                    <p class="book-desc">Set against the 1980s Space Shuttle program, this novel follows Joan Goodwin, a professor of physics and astronomy who joins NASA's Space Shuttle program and finds unexpected passion.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="book-card">
+                <div class="rank-badge">5</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1510172951991-356a3495f7de?auto=format&fit=crop&w=600&q=80" alt="The Crash">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">The Crash</h3>
+                    <div class="book-author">Freida McFadden</div>
+                    <div class="book-info">
+                        <span>Genre: Thriller</span>
+                        <span>Pages: 320</span>
+                    </div>
+                    <p class="book-desc">A pregnant woman stranded in rural Maine during a blizzard accepts shelter from a mysterious couple. She soon realizes her safe haven isn't what it seems in this gut-wrenching story of survival.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 6 -->
+            <div class="book-card">
+                <div class="rank-badge">6</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?auto=format&fit=crop&w=600&q=80" alt="We Do Not Part">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">We Do Not Part</h3>
+                    <div class="book-author">Han Kang</div>
+                    <div class="book-info">
+                        <span>Genre: Literary Fiction</span>
+                        <span>Pages: 288</span>
+                    </div>
+                    <p class="book-desc">The Nobel laureate explores the relationship between two women while uncovering a violent and forgotten chapter in Korean history. Described as "exquisite and profoundly disquieting."</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 7 -->
+            <div class="book-card">
+                <div class="rank-badge">7</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1531901599638-a89e5f1fafd3?auto=format&fit=crop&w=600&q=80" alt="The Emperor of Gladness">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">The Emperor of Gladness</h3>
+                    <div class="book-author">Ocean Vuong</div>
+                    <div class="book-info">
+                        <span>Genre: Literary Fiction</span>
+                        <span>Pages: 304</span>
+                    </div>
+                    <p class="book-desc">Set in the struggling blue-collar town of East Gladness, Connecticut, this novel follows young Hai who forges an unlikely friendship with an elderly widow. A lushly written panorama of unexpected connections.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 8 -->
+            <div class="book-card">
+                <div class="rank-badge">8</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=600&q=80" alt="The Names">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">The Names</h3>
+                    <div class="book-author">Florence Knapp</div>
+                    <div class="book-info">
+                        <span>Genre: Contemporary Fiction</span>
+                        <span>Pages: 352</span>
+                    </div>
+                    <p class="book-desc">A sliding doors story where the narrative splits into three paths based on the name chosen for a newborn baby. A profound, deeply compassionate examination of domestic abuse that's "startlingly joyful."</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 9 -->
+            <div class="book-card">
+                <div class="rank-badge">9</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" alt="Stag Dance">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">Stag Dance</h3>
+                    <div class="book-author">Torrey Peters</div>
+                    <div class="book-info">
+                        <span>Genre: Short Stories</span>
+                        <span>Pages: 288</span>
+                    </div>
+                    <p class="book-desc">A collection of tales ranging from romantic to dystopian to historical. The titular story follows lumberjacks in the 19th Century planning a winter dance, with some men volunteering to attend as women.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Book 10 -->
+            <div class="book-card">
+                <div class="rank-badge">10</div>
+                <div class="card-top">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" alt="The Housemaid">
+                </div>
+                <div class="card-content">
+                    <h3 class="book-title">The Housemaid</h3>
+                    <div class="book-author">Freida McFadden</div>
+                    <div class="book-info">
+                        <span>Genre: Thriller</span>
+                        <span>Pages: 336</span>
+                    </div>
+                    <p class="book-desc">A gripping thriller about marriage and revenge. When Grady Green calls his wife to share exciting news, he hears her slam on the brakes and disappear. A year later, he spots her on a remote Scottish island.</p>
+                    <a href="https://www.goodreads.com/book/popular_by_date" class="book-link" target="_blank">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Data sourced from <span class="highlight">Goodreads</span>, <span class="highlight">Amazon</span>, and <span class="highlight">literary publications</span> :cite[1]:cite[3]:cite[4]. Rankings subject to change.</p>
+        <p>Created with <span class="highlight">HTML</span>, <span class="highlight">CSS</span>, and <span class="highlight">JavaScript</span> | Book Lovers Collection 2025</p>
+    </footer>
+
+    <script>
+        // Add hover effect to book cards
+        document.querySelectorAll('.book-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.03)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Filter button functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // In a real implementation, this would filter the books
+                // For this demo, we'll just show all
+                document.querySelectorAll('.book-card').forEach(card => {
+                    card.style.display = 'block';
+                });
+            });
+        });
+
+        // Animation for page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.body.style.opacity = 1;
+            }, 100);
+        });
+        
+        document.body.style.opacity = 0;
+        document.body.style.transition = 'opacity 0.8s ease-in';
+    </script>
+</body>
+</html>
